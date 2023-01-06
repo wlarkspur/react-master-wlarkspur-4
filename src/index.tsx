@@ -1,5 +1,5 @@
-import ReactDOM from "react-dom/client";
 import React from "react";
+import ReactDOM from "react-dom/client";
 import { RecoilRoot } from "recoil";
 import { darkTheme } from "./theme";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
@@ -57,16 +57,16 @@ table {
 * {
   box-sizing: border-box;
 }
-body {
+body{
   font-weight: 300;
   font-family: 'Source Sans Pro', sans-serif;
-  background-color:${(props) => props.theme.bgColor};
-  color:black;
+  color: black;
   line-height: 1.2;
+  background: linear-gradient(135deg, #e09, #d0e);
 }
-a {
-  text-decoration:none;
-  color:inherit;
+a{
+  text-decoration: none;
+  color: inherit
 }
 `;
 
@@ -75,14 +75,14 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-  //<React.StrictMode> react-dnd does not support "react":"^18"
-  <RecoilRoot>
-    <ThemeProvider theme={darkTheme}>
-      <GlobalStyle />
-      <App />
-    </ThemeProvider>
-  </RecoilRoot>
-  //</React.StrictMode>
+  <React.StrictMode>
+    <RecoilRoot>
+      <ThemeProvider theme={darkTheme}>
+        <GlobalStyle />
+        <App />
+      </ThemeProvider>
+    </RecoilRoot>
+  </React.StrictMode>
 );
 
 export default root;
