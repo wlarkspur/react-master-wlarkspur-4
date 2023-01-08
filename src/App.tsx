@@ -1,24 +1,13 @@
 import styled from "styled-components";
-import { motion } from "framer-motion";
-import { useRef } from "react";
+import { motion, useMotionValue, useScroll, useTransform } from "framer-motion";
+import { useEffect, useRef } from "react";
 
-const Wrapper = styled.div`
+const Wrapper = styled(motion.div)`
   display: flex;
-  height: 100vh;
+  height: 150vh;
   width: 100vw;
   justify-content: center;
   align-items: center;
-`;
-
-const BiggerBox = styled.div`
-  width: 400px;
-  height: 400px;
-  background-color: rgba(255, 255, 255, 0.4);
-  border-radius: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
 `;
 
 const Box = styled(motion.div)`
@@ -29,31 +18,22 @@ const Box = styled(motion.div)`
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
 `;
 
-const boxVariants = {
-  hover: { scale: 1.2, rotate: -90 },
-  click: { scale: 0.8, borderRadius: "100%" },
-  drag: {
-    backgroundColor: "rgba(253, 203, 110,1.0)",
-    transition: { duration: 0.5 },
-  },
-};
-
 function App() {
-  const biggerBoxRef = useRef<HTMLDivElement>(null);
+  const x = useMotionValue(0);
+  const rotate = useTransform(x, [-300, 300], [-360, 360]);
+  const gradient = useTransform(
+    x,
+    [-800, 800],
+    [
+      "linear-gradient(135deg, rgb(0,210,238),rgb(0,83,238))",
+      "linear-gradient(135deg, rgb(0,238,155),rgb(238,178,0))",
+    ]
+  );
+  const { scrollYProgress } = useScroll();
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 5]);
   return (
-    <Wrapper>
-      <BiggerBox ref={biggerBoxRef}>
-        <Box
-          drag
-          dragSnapToOrigin
-          dragElastic={0.05}
-          dragConstraints={biggerBoxRef}
-          variants={boxVariants}
-          whileHover="hover"
-          whileDrag="drag"
-          whileTap="click"
-        />
-      </BiggerBox>
+    <Wrapper style={{ background: gradient }}>
+      <Box style={{ x, rotate, scale }} drag="x" dragSnapToOrigin />
     </Wrapper>
   );
 }
