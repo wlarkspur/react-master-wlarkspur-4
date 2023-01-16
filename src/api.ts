@@ -25,3 +25,9 @@ export function getMovies() {
     (response) => response.json()
   );
 }
+
+export function getSearch() {
+  return fetch(
+    `${BASE_PATH}/search/movie?api_key=${API_KEY}&language=en-US&query=avatar&page=1&include_adult=false`
+  );
+}
