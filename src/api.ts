@@ -33,8 +33,8 @@ export function getMovies() {
   );
 }
 
-export function getSearch() {
+export function getSearch(keyword: string) {
   return fetch(
-    `${BASE_PATH}/search/movie?api_key=${API_KEY}&language=en-US&query=avatar&page=1&include_adult=false`
+    `${BASE_PATH}/search/movie?api_key=${API_KEY}&language=en-US&query=${keyword}&page=1&include_adult=false`
   ).then((response) => response.json());
 }

@@ -2,7 +2,7 @@ import { useLocation } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getSearch, IGetSearch } from "../api";
 import styled from "styled-components";
-import { makeImagePath } from "../utils";
+import { makeImagePath, makeSearchResult } from "../utils";
 
 const Wrapper = styled.div`
   background: black;
@@ -46,11 +46,10 @@ const Result = styled.div<{ bgphoto: string }>`
 function Search() {
   const location = useLocation();
   const keyword = new URLSearchParams(location.search).get("keyword");
-  const { data, isLoading } = useQuery<IGetSearch>(
-    ["movies", "result"],
-    getSearch
+  const { data, isLoading } = useQuery<IGetSearch>(["movies", keyword], () =>
+    getSearch(keyword || "")
   );
-  console.log(data);
+  console.log(getSearch);
   return (
     <Wrapper>
       {isLoading ? (
