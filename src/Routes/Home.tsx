@@ -30,6 +30,7 @@ const Banner = styled.div<{ bgphoto: string }>`
   background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.6)),
     url(${(props) => props.bgphoto});
   background-size: cover;
+  background-position: center;
 `;
 
 const Title = styled.h2`
