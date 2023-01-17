@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import { click } from "@testing-library/user-event/dist/click";
 import { AnimatePresence, motion, useScroll } from "framer-motion";
 import { useState } from "react";
 import { useFormState } from "react-hook-form";
