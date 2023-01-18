@@ -1,6 +1,7 @@
-const API_KEY = "30a18278aa32c27de99875e2b7b41efe";
+/* const API_KEY = "30a18278aa32c27de99875e2b7b41efe"; */
 const BASE_PATH = "https://api.themoviedb.org/3";
-
+const API_KEY = process.env.REACT_APP_API_KEY;
+console.log(API_KEY);
 interface IMovie {
   id: number;
   backdrop_path: string;
