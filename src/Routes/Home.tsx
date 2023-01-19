@@ -136,14 +136,14 @@ const BigOverview = styled.p`
 `;
 
 const rowVariants = {
-  hidden: (isBack: number) => ({
-    x: isBack ? -window.outerWidth : window.outerWidth,
+  hidden: (direction: number) => ({
+    x: direction > 0 ? window.outerWidth : -window.outerWidth,
   }),
   visible: {
     x: 0,
   },
-  exit: (isBack: number) => ({
-    x: isBack ? window.outerWidth : -window.outerWidth,
+  exit: (direction: number) => ({
+    x: direction > 0 ? -window.outerWidth : window.outerWidth,
   }),
 };
 const boxVariants = {
@@ -206,14 +206,15 @@ function Home() {
     ["movies", "popular"],
     getPopular
   );
-  const [back, setBack] = useState(false);
+  const [direction, setDirection] = useState(0);
   const [index, setIndex] = useState(0);
-  console.log(index, back);
+
   const [leaving, setLeaving] = useState(false);
+  console.log(index, direction, leaving);
   const increaseIndex = () => {
     if (data) {
       if (leaving) return;
-      setBack(false);
+      setDirection(1);
       toggleLeaving();
       const totalMovies = data.results.length - 1;
       const maxIndex = Math.floor(totalMovies / offset) - 1;
@@ -223,7 +224,7 @@ function Home() {
   const decreaseIndex = () => {
     if (data) {
       if (leaving) return;
-      setBack(true);
+      setDirection(-1);
       toggleLeaving();
       const totalMovies = data.results.length - 1;
       const maxIndex = Math.floor(totalMovies / offset) - 1;
@@ -259,12 +260,12 @@ function Home() {
               </svg>
             </SvgLeftStyle>
             <AnimatePresence
-              custom={back}
+              custom={direction}
               initial={false}
               onExitComplete={toggleLeaving}
             >
               <Row
-                custom={back}
+                custom={direction}
                 variants={rowVariants}
                 initial="hidden"
                 animate="visible"
