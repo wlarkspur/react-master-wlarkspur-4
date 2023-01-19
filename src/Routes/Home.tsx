@@ -136,13 +136,13 @@ const BigOverview = styled.p`
 `;
 
 const rowVariants = {
-  hidden: (isBack: boolean) => ({
+  hidden: (isBack: number) => ({
     x: isBack ? -window.outerWidth : window.outerWidth,
   }),
   visible: {
     x: 0,
   },
-  exit: (isBack: boolean) => ({
+  exit: (isBack: number) => ({
     x: isBack ? window.outerWidth : -window.outerWidth,
   }),
 };
@@ -208,6 +208,7 @@ function Home() {
   );
   const [back, setBack] = useState(false);
   const [index, setIndex] = useState(0);
+  console.log(index, back);
   const [leaving, setLeaving] = useState(false);
   const increaseIndex = () => {
     if (data) {
@@ -226,7 +227,7 @@ function Home() {
       toggleLeaving();
       const totalMovies = data.results.length - 1;
       const maxIndex = Math.floor(totalMovies / offset) - 1;
-      setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
+      setIndex((prev) => (prev === 0 ? maxIndex : prev - 1));
     }
   };
   const toggleLeaving = () => setLeaving((prev) => !prev);
