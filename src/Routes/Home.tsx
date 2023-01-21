@@ -38,7 +38,7 @@ const Title = styled.h2`
 `;
 
 const Overview = styled.p`
-  font-size: 20px;
+  font-size: 1.1rem;
   width: 50%;
 `;
 
@@ -50,7 +50,7 @@ const TitleSlider = styled.h2`
 
 const Slider = styled.div`
   position: relative;
-  top: -10rem;
+  top: -15rem;
 `;
 
 const Row = styled(motion.div)`
