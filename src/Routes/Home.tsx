@@ -43,17 +43,15 @@ const Overview = styled.p`
 `;
 
 const TitleSlider = styled.h2`
-  font-size: 25px;
+  font-size: 2rem;
   color: white;
   margin-bottom: 10px;
 `;
 
 const Slider = styled.div`
   position: relative;
-  top: -200px;
+  top: -10rem;
 `;
-
-const SliderPopular = styled.div``;
 
 const Row = styled(motion.div)`
   display: grid;
@@ -120,17 +118,18 @@ const BigCover = styled.div`
   background-position: center center;
   height: 80%;
 `;
-const BigTitle = styled.h3`
+const BigTitle = styled.div`
   color: ${(props) => props.theme.white.lighter};
   padding: 20px;
-  font-size: 26px;
+  font-size: 1.5rem;
   position: relative;
-  top: -80px;
+  top: -15%;
 `;
 
-const BigOverview = styled.p`
+const BigOverview = styled.div`
   padding: 20px;
   top: -80px;
+  font-size: 0.9rem;
   position: relative;
   color: ${(props) => props.theme.white.lighter};
 `;
@@ -300,38 +299,7 @@ function Home() {
               </svg>
             </SvgRightStyle>
           </Slider>
-          {/* <SliderPopular>
-            <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
-              <Row
-                variants={rowVariants}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-                transition={{ type: "tween", duration: 1 }}
-                key={index}
-              >
-                {popularData?.results
-                  .slice(1)
-                  .slice(offset * index, offset * index + offset)
-                  .map((movie) => (
-                    <Box
-                      layoutId={movie.id + ""}
-                      key={movie.id}
-                      whileHover="hover"
-                      initial="normal"
-                      variants={boxVariants}
-                      onClick={() => onBoxClicked(movie.id)}
-                      transition={{ type: "tween" }}
-                      bgphoto={makeImagePath(movie.poster_path, "w500")}
-                    >
-                      <Info variants={infoVariants}>
-                        <h4>{movie.title}</h4>
-                      </Info>
-                    </Box>
-                  ))}
-              </Row>
-            </AnimatePresence>
-          </SliderPopular> */}
+
           <AnimatePresence>
             {bigMovieMatch ? (
               <>

@@ -59,6 +59,7 @@ table {
   box-sizing: border-box;
 }
 body{
+  font-size: 10px;
   font-weight: 300;
   font-family: 'Source Sans Pro', sans-serif;
   color: ${(props) => props.theme.white.darker};
@@ -66,6 +67,8 @@ body{
   background-color: black;
   overflow-x: hidden ;
 }
+
+
 a{
   text-decoration: none;
   color: inherit
