@@ -126,7 +126,7 @@ const BigMovie = styled(motion.div)`
   position: absolute;
   width: 50vw;
   height: 80vh;
-  top: scrollY.get() + 75px;
+  top: 75px;
   /* bottom: 0; */
   left: 0;
   right: 0;
@@ -158,6 +158,15 @@ const BigOverview = styled.div`
   font-size: 0.9rem;
   position: relative;
   color: ${(props) => props.theme.white.lighter};
+`;
+
+const BigMovieWrapper = styled.div`
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 100;
 `;
 
 const offset = 6;
@@ -258,14 +267,14 @@ function Slider({ data, title, row, type }: ISlider) {
 
       <AnimatePresence>
         {bigMovieMatch ? (
-          <>
+          <BigMovieWrapper>
             <Overlay
               onClick={onOverlayClick}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             />
             <BigMovie
-              style={{ top: scrollY.get() - 500 }}
+              /* style={{ top: scrollY.get() + 100 }} */
               layoutId={bigMovieMatch.params.id + row}
             >
               {clickedMovie && (
@@ -290,7 +299,7 @@ function Slider({ data, title, row, type }: ISlider) {
                 </>
               )}
             </BigMovie>
-          </>
+          </BigMovieWrapper>
         ) : null}
       </AnimatePresence>
     </SliderComponent>
