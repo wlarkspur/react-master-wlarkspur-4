@@ -35,12 +35,14 @@ export interface IGetSearch {
   total_result: number;
 }
 
+//Movies - NowPlaying
 export function getMovies() {
   return fetch(`${BASE_PATH}/movie/now_playing?api_key=${API_KEY}`).then(
     (response) => response.json()
   );
 }
 //https://api.themoviedb.org/3/movie/popular?api_key=30a18278aa32c27de99875e2b7b41efe&language=kr-KR&page=1
+// Movies - popular
 export function getPopular() {
   return fetch(`${BASE_PATH}/movie/popular?api_key=${API_KEY}`).then(
     (response) => response.json()
