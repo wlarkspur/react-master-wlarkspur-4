@@ -1,23 +1,26 @@
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useScroll } from "framer-motion";
 import styled from "styled-components";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { getMovies, IGetMoviesResult } from "../api";
-import { useNavigate } from "react-router-dom";
+import { PathMatch, useMatch, useNavigate } from "react-router-dom";
 import { makeImagePath } from "../utils";
 
 const TitleSlider = styled.h2`
   font-size: 2rem;
   color: white;
   margin-bottom: 10px;
+  position: relative;
+  top: -290px;
 `;
 
-const SliderComponent = styled.div`
+const SliderComponent = styled(motion.div)`
   position: relative;
-  top: -15rem;
+  margin-bottom: 270px;
 `;
 
 const Row = styled(motion.div)`
+  top: -15rem;
   display: grid;
   gap: 10px;
   grid-template-columns: repeat(6, 1fr);
@@ -30,7 +33,7 @@ const Box = styled(motion.div)<{ bgphoto: string }>`
   background-image: url(${(props) => props.bgphoto});
   background-size: cover;
   background-position: center center;
-  height: 200px;
+  height: 15rem;
   font-size: 28px;
   &:first-child {
     transform-origin: center left;
@@ -50,7 +53,7 @@ const Info = styled(motion.div)`
   bottom: 0;
   h4 {
     text-align: center;
-    font-size: 15px;
+    font-size: 0.85rem;
   }
 `;
 
@@ -93,7 +96,7 @@ const SvgLeftStyle = styled.div`
     scale: 1.1;
   }
   z-index: 1;
-  top: 100px;
+  top: -150px;
 `;
 const SvgRightStyle = styled.div`
   width: 60px;
@@ -105,26 +108,86 @@ const SvgRightStyle = styled.div`
     scale: 1.1;
   }
   z-index: 1;
-  top: 100px;
+  top: -150px;
   right: 0;
+`;
+
+const Overlay = styled(motion.div)`
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 99;
+`;
+
+const BigMovie = styled(motion.div)`
+  position: absolute;
+  width: 50vw;
+  height: 80vh;
+  top: scrollY.get() + 75px;
+  /* bottom: 0; */
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  border-radius: 15px;
+  overflow: hidden;
+  background-color: ${(props) => props.theme.black.lighter};
+  z-index: 100;
+`;
+
+const BigCover = styled.div`
+  position: relative;
+  width: 100%;
+  background-size: cover;
+  background-position: center center;
+  height: 80%;
+`;
+const BigTitle = styled.div`
+  color: ${(props) => props.theme.white.lighter};
+  padding: 20px;
+  font-size: 1.5rem;
+  position: relative;
+  top: -15%;
+`;
+
+const BigOverview = styled.div`
+  padding: 20px;
+  top: -80px;
+  font-size: 0.9rem;
+  position: relative;
+  color: ${(props) => props.theme.white.lighter};
 `;
 
 const offset = 6;
 
-function Slider() {
-  const { data, isLoading } = useQuery<IGetMoviesResult>(
-    ["movies", "nowPlaying"],
-    getMovies
-  );
-  const navigate = useNavigate();
+interface ISlider {
+  data: IGetMoviesResult;
+  title: string;
+  row: string;
+  type: string;
+}
+
+function Slider({ data, title, row, type }: ISlider) {
   const [direction, setDirection] = useState(0);
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
+  const bigMovieMatch: PathMatch<string> | null = useMatch(
+    `/${type}/${row}/:id`
+  );
+
+  const { scrollY } = useScroll();
+  const navigate = useNavigate();
   const toggleLeaving = () => setLeaving((prev) => !prev);
   const onBoxClicked = (movieId: number) => {
-    navigate(`/movies/${movieId}`);
+    navigate(`/${type}/${row}/${movieId}`);
   };
-
+  const clickedMovie =
+    bigMovieMatch?.params.id &&
+    data?.results.find((movie) => movie.id + "" === bigMovieMatch.params.id);
+  console.log(clickedMovie);
+  const onOverlayClick = () => navigate("/");
   const changeIndex = (increase: boolean) => {
     if (data) {
       if (leaving) return;
@@ -146,7 +209,7 @@ function Slider() {
 
   return (
     <SliderComponent>
-      <TitleSlider>Now Playing</TitleSlider>
+      <TitleSlider>{title}</TitleSlider>
       <SvgLeftStyle onClick={() => changeIndex(false)}>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
           <path d="M512 256C512 114.6 397.4 0 256 0S0 114.6 0 256S114.6 512 256 512s256-114.6 256-256zM271 135c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-87 87 87 87c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0L167 273c-9.4-9.4-9.4-24.6 0-33.9L271 135z" />
@@ -169,15 +232,15 @@ function Slider() {
           animate="visible"
           exit="exit"
           transition={{ type: "tween", duration: 1 }}
-          key={index}
+          key={index + row}
         >
           {data?.results
             .slice(1)
             .slice(offset * index, offset * index + offset)
             .map((movie) => (
               <Box
-                layoutId={movie.id + ""}
-                key={movie.id}
+                layoutId={movie.id + "" + row}
+                key={movie.id + row}
                 whileHover="hover"
                 initial="normal"
                 variants={boxVariants}
@@ -191,6 +254,44 @@ function Slider() {
               </Box>
             ))}
         </Row>
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {bigMovieMatch ? (
+          <>
+            <Overlay
+              onClick={onOverlayClick}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            />
+            <BigMovie
+              style={{ top: scrollY.get() - 500 }}
+              layoutId={bigMovieMatch.params.id + row}
+            >
+              {clickedMovie && (
+                <>
+                  <BigCover
+                    style={{
+                      backgroundImage: `linear-gradient(to top, black, transparent),url(${makeImagePath(
+                        clickedMovie.poster_path,
+                        "w500"
+                      )})`,
+                    }}
+                  />
+                  <BigTitle>{clickedMovie.title}</BigTitle>
+                  <BigOverview>
+                    {
+                      (clickedMovie.overview =
+                        clickedMovie.overview.length > 200
+                          ? clickedMovie.overview.slice(0, 200) + "..."
+                          : clickedMovie.overview)
+                    }
+                  </BigOverview>
+                </>
+              )}
+            </BigMovie>
+          </>
+        ) : null}
       </AnimatePresence>
     </SliderComponent>
   );

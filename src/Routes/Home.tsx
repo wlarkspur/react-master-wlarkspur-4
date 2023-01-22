@@ -22,11 +22,11 @@ const Loader = styled.div`
 `;
 
 const Banner = styled.div<{ bgphoto: string }>`
-  height: 100vh;
+  height: 90vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 60px;
+  padding: 40px;
   background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.6)),
     url(${(props) => props.bgphoto});
   background-size: cover;
@@ -45,47 +45,9 @@ const Overview = styled.p`
 
 const width = useWindowDimensions;
 
-const Overlay = styled(motion.div)`
-  position: fixed;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  opacity: 0;
-`;
-
-const BigMovie = styled(motion.div)`
-  position: absolute;
-  width: 40vw;
-  height: 80vh;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-  border-radius: 15px;
-  overflow: hidden;
-  background-color: ${(props) => props.theme.black.lighter};
-`;
-
-const BigCover = styled.div`
-  width: 100%;
-  background-size: cover;
-  background-position: center center;
-  height: 80%;
-`;
-const BigTitle = styled.div`
-  color: ${(props) => props.theme.white.lighter};
-  padding: 20px;
-  font-size: 1.5rem;
-  position: relative;
-  top: -15%;
-`;
-
-const BigOverview = styled.div`
-  padding: 20px;
-  top: -80px;
-  font-size: 0.9rem;
-  position: relative;
-  color: ${(props) => props.theme.white.lighter};
+const SliderArea = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
 function Home() {
@@ -94,22 +56,11 @@ function Home() {
     ["movies", "nowPlaying"],
     getMovies
   );
-  const bigMovieMatch = useMatch("/movies/:movieId");
-  /* console.log(bigMovieMatch); */
-  const { scrollY } = useScroll();
-
-  const { data: popularData } = useQuery<IGetMoviesResult>(
-    ["movies", "popular"],
+  const { data: popular } = useQuery<IGetMoviesResult>(
+    ["movies2", "popular"],
     getPopular
   );
 
-  const navigate = useNavigate();
-  const onOverlayClick = () => navigate("/");
-  const clickedMovie =
-    bigMovieMatch?.params.movieId &&
-    nowPlaying?.results.find(
-      (movie) => movie.id + "" === bigMovieMatch.params.movieId
-    );
   return (
     <Wrapper>
       {isLoading ? (
@@ -122,45 +73,20 @@ function Home() {
             <Title>{nowPlaying?.results[1].title}</Title>
             <Overview>{nowPlaying?.results[1].overview}</Overview>
           </Banner>
-          <Slider></Slider>
-
-          <AnimatePresence>
-            {bigMovieMatch ? (
-              <>
-                <Overlay
-                  onClick={onOverlayClick}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                />
-                <BigMovie
-                  style={{ top: scrollY.get() + 100 }}
-                  layoutId={bigMovieMatch.params.movieId}
-                >
-                  {clickedMovie && (
-                    <>
-                      <BigCover
-                        style={{
-                          backgroundImage: `linear-gradient(to top, black, transparent),url(${makeImagePath(
-                            clickedMovie.poster_path,
-                            "w500"
-                          )})`,
-                        }}
-                      />
-                      <BigTitle>{clickedMovie.title}</BigTitle>
-                      <BigOverview>
-                        {
-                          (clickedMovie.overview =
-                            clickedMovie.overview.length > 200
-                              ? clickedMovie.overview.slice(0, 200) + "..."
-                              : clickedMovie.overview)
-                        }
-                      </BigOverview>
-                    </>
-                  )}
-                </BigMovie>
-              </>
-            ) : null}
-          </AnimatePresence>
+          <SliderArea>
+            <Slider
+              data={nowPlaying as IGetMoviesResult}
+              title={"Now Playing"}
+              row={"row1"}
+              type={"movies"}
+            />
+            <Slider
+              data={popular as IGetMoviesResult}
+              title={"Popular"}
+              row={"row2"}
+              type={"movies"}
+            />
+          </SliderArea>
         </>
       )}
     </Wrapper>

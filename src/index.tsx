@@ -66,6 +66,7 @@ body{
   line-height: 1.2;
   background-color: black;
   overflow-x: hidden ;
+  height: 200vh;
 }
 
 
