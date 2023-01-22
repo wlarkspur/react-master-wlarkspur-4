@@ -121,7 +121,7 @@ const Overlay = styled(motion.div)`
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 99;
 `;
-
+// 영화 상세화면, CLick Event
 const BigMovie = styled(motion.div)`
   position: absolute;
   width: 50vw;
@@ -144,14 +144,15 @@ const BigCover = styled.div`
   background-position: center center;
   height: 80%;
 `;
+// 영화 상세화면 제목
 const BigTitle = styled.div`
   color: ${(props) => props.theme.white.lighter};
   padding: 20px;
-  font-size: 1.5rem;
+  font-size: 1.7rem;
   position: relative;
-  top: -15%;
+  top: -9%;
 `;
-
+//영화 상세화면 설명란
 const BigOverview = styled.div`
   padding: 20px;
   top: -80px;
@@ -159,7 +160,7 @@ const BigOverview = styled.div`
   position: relative;
   color: ${(props) => props.theme.white.lighter};
 `;
-
+//영화 상세화면 Wrapper
 const BigMovieWrapper = styled.div`
   position: fixed;
   left: 0;
@@ -249,7 +250,7 @@ function Slider({ data, title, row, type }: ISlider) {
             .map((movie) => (
               <Box
                 layoutId={movie.id + "" + row}
-                key={movie.id + row}
+                key={movie.id /* + row */}
                 whileHover="hover"
                 initial="normal"
                 variants={boxVariants}
