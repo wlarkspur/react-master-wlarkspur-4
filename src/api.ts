@@ -49,6 +49,15 @@ export function getPopular() {
   );
 }
 
+export const getUpcoming = async () => {
+  const response = await fetch(
+    `${BASE_PATH}/movie/upcoming?api_key=${API_KEY}`
+  );
+  const json = await response.json();
+  console.log(json);
+  return json;
+};
+// ----------------------------------------------------------------------
 export const getMovies2 = async (): Promise<IGetMoviesResult> => {
   const reponse = await fetch(
     `${BASE_PATH}/movie/now_playing?api_key=${API_KEY}`

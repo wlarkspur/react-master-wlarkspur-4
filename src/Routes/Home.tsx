@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useFormState } from "react-hook-form";
 import { Navigate, useMatch, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { getMovies, getPopular, IGetMoviesResult } from "../api";
+import { getUpcoming, getMovies, getPopular, IGetMoviesResult } from "../api";
 import Slider from "../Components/Slider";
 import useWindowDimensions from "../Components/useWindowDimension";
 import { makeImagePath } from "../utils";
@@ -60,6 +60,10 @@ function Home() {
     ["movies2", "popular"],
     getPopular
   );
+  const { data: upcoming } = useQuery<IGetMoviesResult>(
+    ["movies3", "lastest"],
+    getUpcoming
+  );
 
   return (
     <Wrapper>
@@ -78,13 +82,19 @@ function Home() {
               data={nowPlaying as IGetMoviesResult}
               title={"Now Playing"}
               row={"row1"}
-              type={"movies"}
+              media={"movies"}
             />
             <Slider
               data={popular as IGetMoviesResult}
               title={"Popular"}
               row={"row2"}
-              type={"movies"}
+              media={"movies"}
+            />
+            <Slider
+              data={upcoming as IGetMoviesResult}
+              title={"Upcoming"}
+              row={"row3"}
+              media={"movies"}
             />
           </SliderArea>
         </>

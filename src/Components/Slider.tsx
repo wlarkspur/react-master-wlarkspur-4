@@ -33,7 +33,7 @@ const Box = styled(motion.div)<{ bgphoto: string }>`
   background-image: url(${(props) => props.bgphoto});
   background-size: cover;
   background-position: center center;
-  height: 15rem;
+  height: 13rem;
   font-size: 28px;
   &:first-child {
     transform-origin: center left;
@@ -176,22 +176,21 @@ interface ISlider {
   data: IGetMoviesResult;
   title: string;
   row: string;
-  type: string;
+  media: string;
 }
 
-function Slider({ data, title, row, type }: ISlider) {
+function Slider({ data, title, row, media }: ISlider) {
   const [direction, setDirection] = useState(0);
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
   const bigMovieMatch: PathMatch<string> | null = useMatch(
-    `/${type}/${row}/:id`
+    `/${media}/${row}/:id`
   );
 
-  const { scrollY } = useScroll();
   const navigate = useNavigate();
   const toggleLeaving = () => setLeaving((prev) => !prev);
   const onBoxClicked = (movieId: number) => {
-    navigate(`/${type}/${row}/${movieId}`);
+    navigate(`/${media}/${row}/${movieId}`);
   };
   const clickedMovie =
     bigMovieMatch?.params.id &&
@@ -256,7 +255,7 @@ function Slider({ data, title, row, type }: ISlider) {
                 variants={boxVariants}
                 onClick={() => onBoxClicked(movie.id)}
                 transition={{ type: "tween" }}
-                bgphoto={makeImagePath(movie.poster_path, "w500")}
+                bgphoto={makeImagePath(movie.backdrop_path, "w500")}
               >
                 <Info variants={infoVariants}>
                   <h4>{movie.title}</h4>
@@ -283,7 +282,7 @@ function Slider({ data, title, row, type }: ISlider) {
                   <BigCover
                     style={{
                       backgroundImage: `linear-gradient(to top, black, transparent),url(${makeImagePath(
-                        clickedMovie.poster_path,
+                        clickedMovie.backdrop_path,
                         "w500"
                       )})`,
                     }}
