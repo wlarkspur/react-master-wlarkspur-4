@@ -185,7 +185,7 @@ function Slider({ data, title, row, media }: ISlider) {
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
   const bigMovieMatch: PathMatch<string> | null = useMatch(
-    `/${media}/${row}/:id`
+    `/${media}/${row}/:movieId`
   );
 
   const navigate = useNavigate();
@@ -195,8 +195,10 @@ function Slider({ data, title, row, media }: ISlider) {
   };
   //아래 movie:any Slider에서 movieId가져오기 위한 억까props
   const clickedMovie =
-    bigMovieMatch?.params.id &&
-    data.results.find((movie) => movie.id + "" === bigMovieMatch.params.id);
+    bigMovieMatch?.params.movieId &&
+    data.results.find(
+      (movie) => movie.id + "" === bigMovieMatch.params.movieId
+    );
   /* console.log(clickedMovie); */
   const onOverlayClick = () => navigate("/");
   const changeIndex = (increase: boolean) => {
