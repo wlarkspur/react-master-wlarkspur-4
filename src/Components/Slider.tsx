@@ -185,7 +185,7 @@ function Slider({ data, title, row, media }: ISlider) {
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
   const bigMovieMatch: PathMatch<string> | null = useMatch(
-    `/${media}/${row}/:movieId`
+    `/${media}/${row}/:movieId` // :id -> :movieId Route id와 API id 간 구분을 명확히하기 위함
   );
 
   const navigate = useNavigate();
