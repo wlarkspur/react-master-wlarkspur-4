@@ -280,7 +280,7 @@ function Slider({ data, title, row, media }: ISlider) {
             />
             <BigMovie
               /* style={{ top: scrollY.get() + 100 }} */
-              layoutId={bigMovieMatch.params.id + row}
+              layoutId={bigMovieMatch.params.movieId + row} //movieId 는 route :route movieId완 애니연동
             >
               {clickedMovie && (
                 <>
