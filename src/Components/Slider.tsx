@@ -2,7 +2,7 @@ import { AnimatePresence, motion, useScroll } from "framer-motion";
 import styled from "styled-components";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { getMovies, IGetMoviesResult } from "../api";
+import { getMovies, IGetDetails, IGetMoviesResult } from "../api";
 import { PathMatch, useMatch, useNavigate } from "react-router-dom";
 import { makeImagePath } from "../utils";
 
@@ -16,7 +16,7 @@ const TitleSlider = styled.h2`
 
 const SliderComponent = styled(motion.div)`
   position: relative;
-  margin-bottom: 270px;
+  margin-bottom: 230px;
 `;
 
 const Row = styled(motion.div)`
@@ -177,6 +177,7 @@ interface ISlider {
   title: string;
   row: string;
   media: string;
+  //movieId <- Home에서 props 얻기위해 억까로 넣은 props으로 에러 가능
 }
 
 function Slider({ data, title, row, media }: ISlider) {
@@ -192,10 +193,11 @@ function Slider({ data, title, row, media }: ISlider) {
   const onBoxClicked = (movieId: number) => {
     navigate(`/${media}/${row}/${movieId}`);
   };
+  //아래 movie:any Slider에서 movieId가져오기 위한 억까props
   const clickedMovie =
     bigMovieMatch?.params.id &&
-    data?.results.find((movie) => movie.id + "" === bigMovieMatch.params.id);
-  console.log(clickedMovie);
+    data.results.find((movie) => movie.id + "" === bigMovieMatch.params.id);
+  /* console.log(clickedMovie); */
   const onOverlayClick = () => navigate("/");
   const changeIndex = (increase: boolean) => {
     if (data) {
@@ -245,6 +247,7 @@ function Slider({ data, title, row, media }: ISlider) {
         >
           {data?.results
             .slice(1)
+            /* .sort(() => 0.5 - Math.random()) */
             .slice(offset * index, offset * index + offset)
             .map((movie) => (
               <Box

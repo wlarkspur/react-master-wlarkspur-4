@@ -1,10 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
 import { AnimatePresence, motion, useScroll } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useFormState } from "react-hook-form";
 import { Navigate, useMatch, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { getUpcoming, getMovies, getPopular, IGetMoviesResult } from "../api";
+import {
+  getUpcoming,
+  getMovies,
+  getPopular,
+  IGetMoviesResult,
+  getDetails,
+  IGetDetails,
+} from "../api";
 import Slider from "../Components/Slider";
 import useWindowDimensions from "../Components/useWindowDimension";
 import { makeImagePath } from "../utils";
@@ -84,6 +91,7 @@ function Home() {
               row={"row1"}
               media={"movies"}
             />
+
             <Slider
               data={popular as IGetMoviesResult}
               title={"Popular"}

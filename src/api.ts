@@ -1,3 +1,5 @@
+import { Url, UrlObject } from "url";
+
 /* const API_KEY = "30a18278aa32c27de99875e2b7b41efe"; */
 const BASE_PATH = "https://api.themoviedb.org/3";
 const API_KEY = process.env.REACT_APP_API_KEY;
@@ -9,7 +11,16 @@ interface IMovie {
   title: string;
   overview: string;
 }
-
+interface IDetails {
+  id: number;
+  name: string;
+  poster_path: string;
+  backdrop_path: string;
+}
+interface IGenres {
+  id: number;
+  name: string;
+}
 export interface IGetMoviesResult {
   dates: {
     maximum: string;
@@ -19,13 +30,21 @@ export interface IGetMoviesResult {
   results: IMovie[];
   total_pages: number;
   total_results: number;
+  movieId: string;
 }
 
-export interface IPopularResult {
-  page: number;
-  results: IMovie[];
-  total_pages: number;
-  total_results: number;
+export interface IGetDetails {
+  backdrop_path: string;
+  belongs_to_collection: IDetails[];
+  genres: IGenres[];
+  homepages: string;
+  id: string;
+  overview: string;
+  poster_path: string;
+  release_date: string;
+  runtime: number;
+  title: string;
+  tagline: string;
 }
 
 export interface IGetSearch {
@@ -54,37 +73,17 @@ export const getUpcoming = async () => {
     `${BASE_PATH}/movie/upcoming?api_key=${API_KEY}`
   );
   const json = await response.json();
-  console.log(json);
+
   return json;
 };
 // ----------------------------------------------------------------------
-export const getMovies2 = async (): Promise<IGetMoviesResult> => {
+
+export const getDetails = async (movieId: any) => {
   const reponse = await fetch(
-    `${BASE_PATH}/movie/now_playing?api_key=${API_KEY}`
+    `${BASE_PATH}/movie/${movieId}?api_key=${API_KEY}`
   );
-  const json = await reponse.json();
+  const json = reponse.json();
   return json;
-};
-
-export const getPopular2 = async (): Promise<IPopularResult> => {
-  const response = await fetch(`${BASE_PATH}/movie/popular?api_key=${API_KEY}`);
-  const json = await response.json();
-  return json;
-};
-
-export const popularAsyncFunction = async () => {
-  const nowPlayingMovies = await getMovies2();
-  const popularMovies = await getPopular2();
-
-  /* const movies = Array.isArray(popularMovies)
-    ? popularMovies
-    : Array.from(popularMovies); */
-  const filteredArray = popularMovies.results.filter((movie: IMovie) => {
-    return !nowPlayingMovies.results.some((nowPlayingMovie: IMovie) => {
-      return movie.id !== nowPlayingMovie.id;
-    });
-  });
-  return filteredArray;
 };
 
 export function getSearch(keyword: string) {
