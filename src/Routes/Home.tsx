@@ -72,6 +72,7 @@ function Home() {
     getUpcoming
   );
 
+  console.log(nowPlaying);
   return (
     <Wrapper>
       {isLoading ? (
@@ -84,6 +85,7 @@ function Home() {
             <Title>{nowPlaying?.results[1].title}</Title>
             <Overview>{nowPlaying?.results[1].overview}</Overview>
           </Banner>
+
           <SliderArea>
             <Slider
               data={nowPlaying as IGetMoviesResult}

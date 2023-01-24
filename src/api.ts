@@ -34,7 +34,7 @@ export interface IGetMoviesResult {
 
 export interface IGetDetails {
   backdrop_path: string;
-  belongs_to_collection: IDetails[];
+  belongs_to_collection: IDetails;
   genres: IGenres[];
   homepages: string;
   id: string;
@@ -44,6 +44,7 @@ export interface IGetDetails {
   runtime: number;
   title: string;
   tagline: string;
+  vote_average: number;
 }
 
 export interface IGetSearch {
@@ -77,7 +78,7 @@ export const getUpcoming = async () => {
 };
 // ----------------------------------------------------------------------
 
-export const getDetails = async (movieId: number) => {
+export const getDetails = async (movieId: number | undefined) => {
   const reponse = await fetch(
     `${BASE_PATH}/movie/${movieId}?api_key=${API_KEY}`
   );

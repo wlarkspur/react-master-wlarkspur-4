@@ -2,7 +2,7 @@ import { AnimatePresence, motion, useScroll } from "framer-motion";
 import styled from "styled-components";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { getMovies, IGetDetails, IGetMoviesResult } from "../api";
+import { getDetails, getMovies, IGetDetails, IGetMoviesResult } from "../api";
 import { PathMatch, useMatch, useNavigate } from "react-router-dom";
 import { makeImagePath } from "../utils";
 
@@ -161,6 +161,7 @@ const BigOverview = styled.div`
   color: ${(props) => props.theme.white.lighter};
 `;
 //영화 상세화면 Wrapper
+
 const BigMovieWrapper = styled.div`
   position: fixed;
   left: 0;
@@ -170,6 +171,20 @@ const BigMovieWrapper = styled.div`
   z-index: 100;
 `;
 
+const MainTitle = styled.div`
+  position: relative;
+  display: flex;
+  top: -4rem;
+  justify-content: space-between;
+  margin-right: 1rem;
+  align-items: center;
+`;
+
+const Release = styled.div`
+  position: relative;
+  font-size: 0.8rem;
+`;
+
 const offset = 6;
 
 interface ISlider {
@@ -177,14 +192,15 @@ interface ISlider {
   title: string;
   row: string;
   media: string;
-  //movieId <- Home에서 props 얻기위해 억까로 넣은 props으로 에러 가능
+  /* detailMovieId: []; */ // <- Home에서 props 얻기위해 억까로 넣은 props으로 에러 가능
 }
 
+//Slider function
 function Slider({ data, title, row, media }: ISlider) {
   const [direction, setDirection] = useState(0);
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
-  const bigMovieMatch: PathMatch<string> | null = useMatch(
+  const bigMovieMatch /* : PathMatch<string> | null */ = useMatch(
     `/${media}/${row}/:movieId` // :id -> :movieId Route id와 API id 간 구분을 명확히하기 위함
   );
 
@@ -199,7 +215,12 @@ function Slider({ data, title, row, media }: ISlider) {
     data.results.find(
       (movie) => movie.id + "" === bigMovieMatch.params.movieId
     );
-  /* console.log(clickedMovie); */
+
+  const { data: clickedMovieDetail } = useQuery<IGetDetails>(
+    [bigMovieMatch?.params.movieId, "detail"],
+    () => getDetails(Number(bigMovieMatch?.params.movieId))
+  );
+  console.log(clickedMovieDetail?.id);
   const onOverlayClick = () => navigate("/");
   const changeIndex = (increase: boolean) => {
     if (data) {
@@ -292,7 +313,15 @@ function Slider({ data, title, row, media }: ISlider) {
                       )})`,
                     }}
                   />
-                  <BigTitle>{clickedMovie.title}</BigTitle>
+                  <MainTitle>
+                    <BigTitle>{clickedMovie.title}</BigTitle>
+                    <Release>
+                      Release date: <br />
+                      {clickedMovieDetail?.release_date}
+                    </Release>
+                  </MainTitle>
+
+                  {/* <div>{clickedMovieDetail?.vote_average}</div> */}
                   <BigOverview>
                     {
                       (clickedMovie.overview =
