@@ -1,6 +1,5 @@
 import { Url, UrlObject } from "url";
 
-/* const API_KEY = "30a18278aa32c27de99875e2b7b41efe"; */
 const BASE_PATH = "https://api.themoviedb.org/3";
 const API_KEY = process.env.REACT_APP_API_KEY;
 const REGION_KR = "kr-KR";
@@ -78,7 +77,7 @@ export const getUpcoming = async () => {
 };
 // ----------------------------------------------------------------------
 
-export const getDetails = async (movieId: any) => {
+export const getDetails = async (movieId: number) => {
   const reponse = await fetch(
     `${BASE_PATH}/movie/${movieId}?api_key=${API_KEY}`
   );
