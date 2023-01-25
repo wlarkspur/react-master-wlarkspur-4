@@ -216,10 +216,10 @@ function Slider({ data, title, row, media }: ISlider) {
       (movie) => movie.id + "" === bigMovieMatch.params.movieId
     );
 
-  const { data: clickedMovieDetail } = useQuery<IGetDetails>(
-    [bigMovieMatch?.params.movieId, "detail"],
-    () => getDetails(Number(bigMovieMatch?.params.movieId))
-  );
+  const { data: clickedMovieDetail, isLoading: detailLoading } =
+    useQuery<IGetDetails>([bigMovieMatch?.params.movieId, "detail"], () =>
+      getDetails(Number(bigMovieMatch?.params.movieId))
+    );
   console.log(clickedMovieDetail?.id);
   const onOverlayClick = () => navigate("/");
   const changeIndex = (increase: boolean) => {

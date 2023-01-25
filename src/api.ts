@@ -79,6 +79,9 @@ export const getUpcoming = async () => {
 // ----------------------------------------------------------------------
 
 export const getDetails = async (movieId: number | undefined) => {
+  if (!movieId) {
+    return null;
+  }
   const reponse = await fetch(
     `${BASE_PATH}/movie/${movieId}?api_key=${API_KEY}`
   );
