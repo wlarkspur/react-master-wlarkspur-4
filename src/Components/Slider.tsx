@@ -316,7 +316,7 @@ function Slider({ data, title, row, media }: ISlider) {
                   <MainTitle>
                     <BigTitle>{clickedMovie.title}</BigTitle>
                     <Release>
-                      Release date: <br />
+                      Release date : <br />
                       {clickedMovieDetail?.release_date}
                     </Release>
                   </MainTitle>
