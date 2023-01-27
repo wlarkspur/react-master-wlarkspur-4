@@ -325,7 +325,7 @@ function Slider({ data, title, row, media }: ISlider) {
                   <BigOverview>
                     {
                       (clickedMovie.overview =
-                        clickedMovie.overview.length > 200
+                        clickedMovie.overview.length > 201
                           ? clickedMovie.overview.slice(0, 200) + "..."
                           : clickedMovie.overview)
                     }
