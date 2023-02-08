@@ -72,7 +72,7 @@ function Home() {
     getUpcoming
   );
 
-  console.log(nowPlaying);
+  //console.log(nowPlaying);
   return (
     <Wrapper>
       {isLoading ? (
