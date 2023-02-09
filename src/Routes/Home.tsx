@@ -50,7 +50,7 @@ const Overview = styled.p`
   width: 50%;
 `;
 
-const width = useWindowDimensions;
+//const width = useWindowDimensions;
 
 const SliderArea = styled.div`
   display: flex;
