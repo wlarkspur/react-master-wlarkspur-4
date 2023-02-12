@@ -27,7 +27,7 @@ export default App;
 
 createBrowserRouter([
   {
-    path: "/" /* || "/movies/:id" <-- Is this work?...*/,
+    path: "/",
     element: <Home />,
     children: [
       {
